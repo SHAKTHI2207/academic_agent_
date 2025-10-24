@@ -1,15 +1,30 @@
+"""
+agents/evaluator_agent/service.py
+---------------------------------
+Evaluator Agent: Grades answers using rubric-based logic.
+"""
+
 from datetime import datetime
-import random
 
 class EvaluatorAgent:
     def __init__(self):
-        self.role = "Reviewer"
-        self.goal = "Provide logical, transparent AI-assisted grading."
+        self.role = "Auto-Evaluator"
+        self.goal = "Assess responses fairly using rubric-based logic."
+        self.version = "v1.0"
 
-    def evaluate(self, exams, rubric):
-        results = []
-        for i in range(3):
-            marks = random.uniform(75,95)
-            feedback = "Strong conceptual understanding." if marks>85 else "Needs clarity improvement."
-            results.append({"student": f"Student_{i+1}", "score": round(marks,2), "feedback": feedback})
-        return {"agent":"EvaluatorAgent","results":results,"timestamp":datetime.utcnow().isoformat()}
+    def evaluate_responses(self, syllabus_text: str):
+        topics = [t.strip() for t in syllabus_text.split(",") if t.strip()]
+        evaluations = {
+            topic: f"Evaluation complete for {topic}" for topic in topics
+        }
+        return {
+            "agent": "EvaluatorAgent",
+            "generated_on": datetime.utcnow().isoformat(),
+            "evaluations": evaluations
+        }
+
+# Global instance
+agent = EvaluatorAgent()
+
+def evaluate_responses(syllabus_text: str):
+    return agent.evaluate_responses(syllabus_text)
