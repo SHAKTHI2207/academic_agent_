@@ -107,14 +107,6 @@ AI Systems Researcher | PGDM Student | Quantum-AI Enthusiast
 This repository is licensed under the MIT License.
 © 2025 Brok AI — All rights reserved.
 
-⸻
-
-Citation
-
-If referencing this framework in academic or research contexts:
-Shakthi (2025). Brok AI Academic System v3.0: 
-Autonomous Asynchronous Multi-Agent Academic Framework. 
-GitHub Repository: https://github.com/<your-username>/academic_agent_core
 ------------------------------------------------
 
 
