@@ -17,4 +17,4 @@ uvicorn api.main:app --reload
 ```
 
 ## License
-© 2025 Shakthivel P — All rights reserved.
+© 2025 Shakthivel M under Brok AI — All rights reserved.
