@@ -1,25 +1,34 @@
 """
-agents/content_agent/service.py
--------------------------------
-Implements backend logic for Content Agent.
+agents/content_agent/routes.py
+------------------------------
+Routes for Content Agent — handles syllabus uploads and content generation.
 """
 
-import io
+from fastapi import APIRouter, File, UploadFile, Form
+from agents.content_agent import service
 
-def generate_content(syllabus: str):
-    """
-    Generates content (mock logic for now).
-    You can replace this later with GPT-based summarization or QnA generation.
-    """
-    lessons = [f"Lesson {i+1}: {topic.strip().capitalize()}" for i, topic in enumerate(syllabus.split(','))]
-    return {"generated_lessons": lessons, "total_lessons": len(lessons)}
+router = APIRouter()
 
-def upload_and_parse(file):
-    """
-    Parses uploaded file (.pdf, .docx, .csv) — simplified placeholder.
-    """
-    filename = file.filename.lower()
-    contents = file.file.read().decode("utf-8", errors="ignore")
+@router.get("/")
+async def content_root():
+    return {"agent": "Content Agent", "status": "active"}
 
-    # For now, just return text (pretend we parsed it)
-    return contents[:500]  # return first 500 chars as preview
+@router.post("/generate")
+async def generate_lessons(syllabus: str = Form(...)):
+    """
+    Generates lessons and topics from plain text syllabus input.
+    """
+    data = service.generate_content(syllabus)
+    return {"status": "success", "data": data}
+
+@router.post("/upload")
+async def upload_syllabus(file: UploadFile = File(...)):
+    """
+    Uploads a syllabus file (.pdf, .docx, .csv) and extracts its contents.
+    """
+    try:
+        text = service.upload_and_parse(file)
+        data = service.generate_content(text)
+        return {"status": "success", "data": data}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
