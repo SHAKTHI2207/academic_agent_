@@ -1,21 +1,31 @@
+"""
+agents/rubric_agent/service.py
+------------------------------
+Rubric Agent: Designs evaluation rubrics for objective grading.
+"""
+
 from datetime import datetime
-import random
 
 class RubricAgent:
     def __init__(self):
-        self.role = "Evaluation Architect"
-        self.goal = "Build fair and balanced rubric matrices."
-        self.memory = []
+        self.role = "Rubric Architect"
+        self.goal = "Define fair and transparent evaluation criteria."
+        self.version = "v1.0"
 
-    def create_rubric(self, exams):
-        rubric = {"criteria": {}, "levels": ["Poor","Good","Excellent"]}
-        for q in exams.get("questions", []):
-            topic = q["topic"]
-            if topic not in rubric["criteria"]:
-                rubric["criteria"][topic] = {
-                    "knowledge": random.uniform(0.3,0.5),
-                    "clarity": random.uniform(0.2,0.4),
-                    "creativity": random.uniform(0.1,0.3)
-                }
-        self.memory.append(rubric)
-        return {"agent":"RubricAgent","rubric":rubric,"timestamp":datetime.utcnow().isoformat()}
+    def design_rubric(self, syllabus_text: str):
+        criteria = ["Knowledge", "Clarity", "Creativity", "Application"]
+        rubric = {
+            c: f"Evaluate {c.lower()} level for each student submission." for c in criteria
+        }
+        return {
+            "agent": "RubricAgent",
+            "generated_on": datetime.utcnow().isoformat(),
+            "criteria": rubric,
+            "syllabus": syllabus_text
+        }
+
+# Global instance
+agent = RubricAgent()
+
+def design_rubric(syllabus_text: str):
+    return agent.design_rubric(syllabus_text)
