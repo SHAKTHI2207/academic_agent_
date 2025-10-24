@@ -1,21 +1,33 @@
+"""
+agents/analytics_agent/service.py
+---------------------------------
+Analytics Agent: Generates performance reports and academic insights.
+"""
+
 from datetime import datetime
-import pandas as pd
 
 class AnalyticsAgent:
     def __init__(self):
-        self.role = "Data Analyst"
-        self.goal = "Generate insights from evaluation data."
+        self.role = "Insight Generator"
+        self.goal = "Transform raw scores into meaningful analytics."
+        self.version = "v1.0"
 
-    def generate_report(self, results):
-        df = pd.DataFrame(results.get("results", []))
-        avg = df["score"].mean() if not df.empty else 0
-        insight = "Overall strong performance." if avg > 85 else "Moderate understanding level."
+    def analyze_performance(self, syllabus_text: str):
+        topics = [t.strip() for t in syllabus_text.split(",") if t.strip()]
+        insights = {
+            "overview": f"Performance analytics generated for {len(topics)} syllabus topics.",
+            "recommendations": [
+                f"Increase focus on {topics[0]}" if topics else "No topics available"
+            ]
+        }
         return {
             "agent": "AnalyticsAgent",
-            "average_score": round(avg,2),
-            "insight": insight,
-            "timestamp": datetime.utcnow().isoformat()
+            "generated_on": datetime.utcnow().isoformat(),
+            "insights": insights
         }
 
+# Global instance
 agent = AnalyticsAgent()
-def generate_report(results): return agent.generate_report(results)
+
+def analyze_performance(syllabus_text: str):
+    return agent.analyze_performance(syllabus_text)
