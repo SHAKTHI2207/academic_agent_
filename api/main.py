@@ -1,47 +1,55 @@
-"""
-api/main.py
-Brok AI Academic API - Modular Multi-Agent FastAPI Interface
-------------------------------------------------------------
-Connects all agents + orchestrator via routes.
-"""
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.middleware.logging import RequestLogger
-app.add_middleware(RequestLogger)
+from middleware.request_logger import RequestLogger
 
-# Import Routers
+# Import all agent routers
 from agents.content_agent.routes import router as content_router
 from agents.exam_agent.routes import router as exam_router
 from agents.rubric_agent.routes import router as rubric_router
 from agents.evaluator_agent.routes import router as evaluator_router
 from agents.analytics_agent.routes import router as analytics_router
-from core.workflow_async import run_workflow_async
 
+# Initialize FastAPI app
 app = FastAPI(
-    title="Brok Academic AI API",
-    version="3.0",
-    description="Autonomous academic orchestration system powered by Brok AI"
+    title="Brok AI Academic Agent System",
+    description="Autonomous academic workflow automation framework with modular agents",
+    version="1.0.0"
 )
 
-# Enable CORS for front-end or local dashboard integration
+# Apply Middleware
+app.add_middleware(RequestLogger)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # allow all origins for testing
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
-# Register routers
+# Register Routers
 app.include_router(content_router, prefix="/content", tags=["Content Agent"])
 app.include_router(exam_router, prefix="/exam", tags=["Exam Agent"])
 app.include_router(rubric_router, prefix="/rubric", tags=["Rubric Agent"])
 app.include_router(evaluator_router, prefix="/evaluate", tags=["Evaluator Agent"])
 app.include_router(analytics_router, prefix="/analytics", tags=["Analytics Agent"])
 
-# Workflow Execution Endpoint
+# Root endpoint
+@app.get("/")
+async def root():
+    return {"message": "Welcome to Brok AI Academic Agent API 🚀"}
+
+# Workflow orchestration endpoint
 @app.post("/workflow/run_async")
-async def execute_full_workflow(syllabus: str):
-    """Triggers full Brok AI academic workflow."""
-    return await run_workflow_async(syllabus)
+async def run_workflow_async(syllabus: str):
+    """
+    This endpoint triggers the asynchronous academic agent workflow.
+    For now, it returns a mock response for testing.
+    """
+    return {
+        "status": "success",
+        "workflow_result": {
+            "workflow_name": "Async Academic Agent Architecture",
+            "syllabus_received": syllabus,
+            "execution": "simulated"
+        }
+    }
