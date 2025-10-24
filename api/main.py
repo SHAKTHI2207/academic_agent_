@@ -7,6 +7,8 @@ Connects all agents + orchestrator via routes.
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from api.middleware.logging import RequestLogger
+app.add_middleware(RequestLogger)
 
 # Import Routers
 from agents.content_agent.routes import router as content_router
