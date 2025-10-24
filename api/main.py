@@ -1,14 +1,13 @@
 """
 api/main.py
 ------------
-Main entry point for the Brok AI Academic Agent API.
-Handles routing, middleware, and workflow orchestration.
+Asynchronous multi-agent orchestration for Brok AI Academic Agent System.
 """
 
 # ==========================================================
 # ✅ IMPORTS
 # ==========================================================
-import sys, os, asyncio, httpx
+import sys, os, asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -27,15 +26,14 @@ from agents.evaluator_agent.routes import router as evaluator_router
 from agents.analytics_agent.routes import router as analytics_router
 
 # ==========================================================
-# ✅ APP INITIALIZATION
+# ✅ FASTAPI APP INIT
 # ==========================================================
 app = FastAPI(
     title="Brok AI Academic Agent System",
-    description="A modular AI-based academic automation framework with multi-agent architecture.",
-    version="2.0"
+    description="Asynchronous AI-based academic automation framework with multi-agent architecture.",
+    version="3.0"
 )
 
-# Allow all origins (for testing on Colab)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -52,13 +50,14 @@ app.include_router(evaluator_router, prefix="/evaluate", tags=["Evaluator Agent"
 app.include_router(analytics_router, prefix="/analytics", tags=["Analytics Agent"])
 
 # ==========================================================
-# ✅ ROOT & HEALTH ROUTES
+# ✅ ROOT & HEALTH ENDPOINTS
 # ==========================================================
 @app.get("/")
 async def root():
     return {
         "message": "Welcome to Brok AI Academic Agent API 🚀",
-        "status": "running",
+        "version": "3.0",
+        "architecture": "Asynchronous Agent Orchestration",
         "agents": [
             "Content", "Exam", "Rubric", "Evaluator", "Analytics"
         ]
@@ -66,46 +65,67 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "uptime": "active", "version": "2.0"}
+    return {"status": "ok", "uptime": "active", "mode": "async", "version": "3.0"}
 
 # ==========================================================
-# ✅ WORKFLOW ORCHESTRATOR
+# ✅ ASYNC AGENT ORCHESTRATION
+# ==========================================================
+async def run_content_agent(syllabus):
+    from agents.content_agent import service
+    return {"Content Agent": service.generate_content(syllabus)}
+
+async def run_exam_agent(syllabus):
+    from agents.exam_agent import service
+    return {"Exam Agent": service.generate_exam(syllabus)}
+
+async def run_rubric_agent(syllabus):
+    from agents.rubric_agent import service
+    return {"Rubric Agent": service.design_rubric(syllabus)}
+
+async def run_evaluator_agent(syllabus):
+    from agents.evaluator_agent import service
+    return {"Evaluator Agent": service.evaluate_responses(syllabus)}
+
+async def run_analytics_agent(syllabus):
+    from agents.analytics_agent import service
+    return {"Analytics Agent": service.analyze_performance(syllabus)}
+
+# ==========================================================
+# ✅ MAIN WORKFLOW ENDPOINT
 # ==========================================================
 @app.post("/workflow/run_async")
 async def run_workflow_async(syllabus: str):
     """
-    Simulates a multi-agent academic workflow asynchronously.
-    Each agent is called sequentially via internal logic.
+    Run all 5 agents asynchronously in parallel.
+    Returns combined results once all agents finish.
     """
-    # 1️⃣ Local agent calls (simulate API chaining)
-    from agents.content_agent import service as content
-    from agents.exam_agent import service as exam
-    from agents.rubric_agent import service as rubric
-    from agents.evaluator_agent import service as evaluator
-    from agents.analytics_agent import service as analytics
-
     try:
-        content_data = content.generate_content(syllabus)
-        exam_data = exam.generate_exam(syllabus)
-        rubric_data = rubric.design_rubric(syllabus)
-        evaluation_data = evaluator.evaluate_responses(syllabus)
-        analytics_data = analytics.analyze_performance(syllabus)
+        # Run all agents in parallel
+        results = await asyncio.gather(
+            run_content_agent(syllabus),
+            run_exam_agent(syllabus),
+            run_rubric_agent(syllabus),
+            run_evaluator_agent(syllabus),
+            run_analytics_agent(syllabus)
+        )
 
-        result = {
-            "Content Agent": content_data,
-            "Exam Agent": exam_data,
-            "Rubric Agent": rubric_data,
-            "Evaluator Agent": evaluation_data,
-            "Analytics Agent": analytics_data
+        # Merge results
+        merged_output = {}
+        for r in results:
+            merged_output.update(r)
+
+        return {
+            "status": "success",
+            "syllabus": syllabus,
+            "architecture": "Async Parallel Agent Execution",
+            "workflow_results": merged_output
         }
-
-        return {"status": "success", "workflow": result}
 
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
 # ==========================================================
-# ✅ APP ENTRY POINT (LOCAL MODE)
+# ✅ RUN LOCALLY
 # ==========================================================
 if __name__ == "__main__":
     import uvicorn
