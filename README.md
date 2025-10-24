@@ -1,4 +1,4 @@
-# Academic Agent Core
+# Academic Agent 
 
 Brok AI Academic System v3.0
 
