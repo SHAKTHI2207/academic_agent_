@@ -1,3 +1,6 @@
+# © 2025 Brok AI | Developed by Shakthi
+# Academic Agent Core v3.0 | Autonomous Multi-Agent Academic Framework
+
 """
 agents/analytics_agent/service.py
 ---------------------------------
