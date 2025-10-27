@@ -115,6 +115,8 @@ This repository is licensed under the MIT License.
 pip install -r requirements.txt
 uvicorn api.main:app --reload
 ```
-
-## License
-© 2025 Shakthivel M under Brok AI — All rights reserved.
+---
+### 🧠 Intellectual Property Notice
+© 2025 Shakthi. All rights reserved.  
+This repository and its underlying architecture (Brok AI Academic System v3.0) are original works created and authored by Shakthi.  
+Any redistribution, reproduction, or derivative work without explicit permission from the author is prohibited.
