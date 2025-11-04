@@ -6,8 +6,4 @@ python-multipart
 pydantic
 python-docx
 requests
-from repo root
-printf "\nuvicorn[standard]==0.22.0\n" >> requirements.txt
-git add requirements.txt
-git commit -m "Add uvicorn for Render ASGI start"
-git push origin main
+nuvicorn[standard]==0.22.0
