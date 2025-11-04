@@ -4,3 +4,5 @@ pandas
 matplotlib
 python-multipart
 pydantic
+python-docx
+requests
