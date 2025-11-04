@@ -7,6 +7,13 @@ Asynchronous multi-agent orchestration for Brok AI Academic Agent System.
 # ==========================================================
 # ✅ IMPORTS
 # ==========================================================
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 import sys, os, asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
