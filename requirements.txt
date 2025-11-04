@@ -1,8 +1,10 @@
-fastapi
-uvicorn[standard]
-pandas
-matplotlib
-python-multipart
-pydantic
-python-docx
-requests
+# === Core dependencies ===
+fastapi==0.103.0
+pydantic==1.10.13
+uvicorn[standard]==0.23.2
+
+# === File parsing & utilities ===
+python-multipart==0.0.6
+python-docx==0.8.11
+PyPDF2==3.0.1
+requests==2.31.0
