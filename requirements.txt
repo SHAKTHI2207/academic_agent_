@@ -1,27 +1,5 @@
 fastapi==0.103.0
 uvicorn[standard]==0.23.2
-pandas==2.1.1
-matplotlib==3.8.0
-python-multipart==0.0.6
-pydantic==1.10.12
-python-docx==0.8.11
-requests==2.31.0
-PyPDF2==3.0.1
-
-# core packaging build helpers
-setuptools>=65.0.0
-wheel
-
-# low-level numeric libs first (ensure wheels available)
-numpy==1.26.4
-
-# main libs
-fastapi==0.103.0
-uvicorn[standard]==0.23.2
-pandas==2.1.1
-matplotlib==3.8.0
-
-# file handling + misc
 python-multipart==0.0.6
 pydantic==1.10.12
 python-docx==0.8.11
